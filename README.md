@@ -61,8 +61,8 @@ These features provide extensive customization options and enhance the engagemen
 
 ## Demo
 
-![](https://github.com/Codestz/rn-alertify/blob/main/example/assets/demo.png)
-![](https://github.com/Codestz/rn-alertify/blob/main/example/assets/demo-1.png)
+![](https://github.com/Codestz/rn-alertify/blob/main/example/assets/demo.jpg)
+![](https://github.com/Codestz/rn-alertify/blob/main/example/assets/demo-1.jpg)
 
 [See the tiktok explanation here](https://www.tiktok.com/@esteban1x/video/7337055562762325254)
 

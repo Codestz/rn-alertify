@@ -36,13 +36,33 @@ export const AlertProvider = ({
     if (isShowing) return;
     setIsShowing(true);
     setAlertProps({
-      ...params,
       ...commonConfig,
+      ...params,
       onPress: () => {
         params.onPress && params.onPress();
         if (!params.onPress && params.dismissible) {
           setIsShowing(false);
         }
+      },
+      type: params.type || undefined,
+      titleStyle: {
+        ...params.titleStyle,
+        disableMultiLine:
+          params.titleStyle?.disableMultiLine ||
+          commonConfig?.titleStyle?.disableMultiLine,
+        maxLines:
+          params.titleStyle?.maxLines || commonConfig?.titleStyle?.maxLines,
+      },
+      messageStyle: {
+        ...params.messageStyle,
+        disableMultiLine:
+          params.messageStyle?.disableMultiLine ||
+          commonConfig?.messageStyle?.disableMultiLine,
+        maxLines:
+          params.messageStyle?.maxLines || commonConfig?.messageStyle?.maxLines,
+      },
+      containerStyle: {
+        ...params.containerStyle,
       },
       hideAfterLoading: params.hideAfterLoading || true,
       duration: params.duration || commonConfig?.duration || 3000,
@@ -103,6 +123,7 @@ export const AlertProvider = ({
   return (
     <AlertContext.Provider
       value={{
+        theme: alertTheme,
         showAlert,
         onOpen,
         onClose,

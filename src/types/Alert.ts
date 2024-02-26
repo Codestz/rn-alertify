@@ -1,10 +1,57 @@
 import React from 'react';
-import type { AlertTheme } from './Theme';
+import type { AlertTheme, AlertThemeShadow } from './Theme';
+import type { TextStyle, ViewStyle } from 'react-native';
 
-/**
- * Represents the properties of the alert message component.
- */
-export interface AlertMessageProps {
+export interface AlertContainerStyle {
+  /**
+   * Specifies the base height of the alert container.
+   *
+   * Note: This height will be used as the base height of the alert container, and the height of the alert will be adjusted based on the content.
+   *
+   * @default 80
+   **/
+  height: number;
+  /**
+   * Specifies the background color of the alert container.
+   *
+   * Note: If you specify the background color as an string, the alert will change only the background color for the current theme mode.
+   *
+   * @default { light: 'white', dark: 'black' }
+   **/
+  backgroundColor:
+    | string
+    | {
+        light?: ViewStyle['backgroundColor'];
+        dark?: ViewStyle['backgroundColor'];
+      };
+}
+
+export interface AlertTextStyle {
+  /**
+   * Specifies the font size of the alert title.
+   *
+   * Note: I recomended to use UtilAdjustedFontSize to adjust the font size based on the screen size.
+   *
+   * @default 16
+   **/
+  fontSize: TextStyle['fontSize'];
+  /**
+   * Specifies the font weight of the alert title.
+   *
+   * @default 'bold'
+   **/
+  fontWeight: TextStyle['fontWeight'];
+  /**
+   * Specifies the color of the alert title.
+   * Note: This will override the color of the alert type.
+   * @default {light: 'black', dark: 'white'}
+   **/
+  color:
+    | TextStyle['color']
+    | {
+        light: TextStyle['color'];
+        dark: TextStyle['color'];
+      };
   /**
    * Specifies if the message should be displayed as a single line.
    */
@@ -12,7 +59,7 @@ export interface AlertMessageProps {
   /**
    * Specifies the maximum number of lines to display for message.
    */
-  maxMessageLines?: number;
+  maxLines?: number;
 }
 
 /**
@@ -57,12 +104,6 @@ export interface AlertProps {
    * @default true
    */
   showIndicator?: boolean;
-
-  /**
-   * A callback function to be called when the alert is pressed or interacted with.
-   * @default null
-   */
-  onPress?: () => void;
   /**
    *  Specifies if the alert should stay open until the user closes it.
    *
@@ -110,10 +151,27 @@ export interface AlertProps {
    */
   hideAfterLoading?: boolean;
   /**
-   * Specifies the message properties of the alert.
+   * Specifies the shadow properties of the alert.
    * @default undefined
+   * */
+  shadow?: Partial<AlertThemeShadow>;
+  /**
+   * Specifies the style of the alert container.
+   **/
+  containerStyle?: Partial<AlertContainerStyle>;
+  /**
+   * Specifies the style of the alert title.
+   **/
+  titleStyle?: Partial<AlertTextStyle>;
+  /**
+   * Specifies the style of the alert message.
+   **/
+  messageStyle?: Partial<AlertTextStyle>;
+  /**
+   * A callback function to be called when the alert is pressed or interacted with.
+   * @default null
    */
-  messageProps?: AlertMessageProps;
+  onPress?: () => void;
 }
 
 export interface AlertCommonProps {
@@ -157,10 +215,13 @@ export interface AlertCommonProps {
    */
   hideAfterLoading?: boolean;
   /**
-   * Specifies the message properties of the alert.
-   * @default undefined
-   */
-  messageProps?: AlertMessageProps;
+   * Specifies the style of the alert container.
+   * */
+  titleStyle?: Partial<Pick<AlertTextStyle, 'disableMultiLine' | 'maxLines'>>;
+  /**
+   * Specifies the style of the alert message.
+   **/
+  messageStyle?: Partial<Pick<AlertTextStyle, 'disableMultiLine' | 'maxLines'>>;
 }
 
 export interface AlertComponentProps extends AlertProps {

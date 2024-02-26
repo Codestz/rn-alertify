@@ -1,5 +1,6 @@
 import { AlertThemeMode } from '../types';
 import type { AlertTheme } from '../types';
+import { UtilAdjustedFontSize } from '../utils';
 import { DarkTheme } from './DarkTheme';
 import { LightTheme } from './LightTheme';
 
@@ -9,9 +10,23 @@ export const DefaultTheme: AlertTheme = {
     light: LightTheme,
     dark: DarkTheme,
   },
-  fontSizes: {
-    fontSizeTitle: 16,
-    fontSizeMessage: 14,
+  fonts: {
+    title: {
+      fontSize: UtilAdjustedFontSize(16),
+      fontWeight: 'bold',
+      color: {
+        light: '#000',
+        dark: '#fff',
+      },
+    },
+    message: {
+      fontSize: UtilAdjustedFontSize(14),
+      fontWeight: 'normal',
+      color: {
+        light: '#000',
+        dark: '#fff',
+      },
+    },
     fontFamily: 'Roboto',
   },
 };

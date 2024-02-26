@@ -16,7 +16,5 @@ export const LightTheme: AlertThemeColors = {
   },
   success: '#4CD964',
   warning: '#FFCC00',
-  titleColor: '#000000',
-  messageColor: '#000000',
   loadingIconColor: '#b4b4b4',
 };

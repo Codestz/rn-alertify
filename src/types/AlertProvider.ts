@@ -1,3 +1,4 @@
+import type { DeepPartial } from '.';
 import type { AlertCommonProps, AlertProps } from './Alert';
 import type { AlertTheme } from './Theme';
 
@@ -60,6 +61,10 @@ export interface AlertContextProps {
    * Use this function when you want to change the content of the alert, after some action.
    */
   changeContent: (params: AlertProps) => void;
+  /**
+   * This value return the current state of the theme.
+   * */
+  theme: AlertTheme;
 }
 
 export interface AlertProviderProps {
@@ -71,7 +76,7 @@ export interface AlertProviderProps {
    * The theme to be used by the AlertProvider.
    * @default DefaultTheme
    */
-  theme?: AlertTheme;
+  theme?: DeepPartial<AlertTheme>;
   /**
    * Property to set if the AlertProvider should take the theme from the mobile device.
    * @default false

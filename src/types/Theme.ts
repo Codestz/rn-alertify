@@ -1,11 +1,11 @@
+import type { TextStyle } from 'react-native';
+
 export interface AlertThemeColors {
   backgroundColor: string;
   success: string;
   error: string;
   info: string;
   warning: string;
-  titleColor: string;
-  messageColor: string;
   shadow: AlertThemeShadow;
   loadingIconColor: string;
 }
@@ -27,10 +27,24 @@ export interface AlertTheme {
     light: AlertThemeColors;
     dark: AlertThemeColors;
   };
-  fontSizes: {
-    fontSizeTitle: number;
-    fontSizeMessage: number;
-    fontFamily: string;
+  fonts: {
+    title: {
+      fontSize: TextStyle['fontSize'];
+      fontWeight: TextStyle['fontWeight'];
+      color: {
+        light: TextStyle['color'];
+        dark: TextStyle['color'];
+      };
+    };
+    message: {
+      fontSize: TextStyle['fontSize'];
+      fontWeight: TextStyle['fontWeight'];
+      color: {
+        light: TextStyle['color'];
+        dark: TextStyle['color'];
+      };
+    };
+    fontFamily: TextStyle['fontFamily'];
   };
 }
 

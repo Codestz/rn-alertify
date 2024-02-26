@@ -9,7 +9,7 @@ Introducing RN-Alertify, your go-to library for seamlessly integrating alert not
     - [AlertProvider Props](#alertproviderprops)
   - [AlertContext](#alert-context)
     - [AlertContext Props](#alertcontextprops)
-  - [AlertCommonProps](#alertcommonprops)
+  - [AlertTextStyleProps](#alerttextstyleprops)
 - [Customization](#customization)
   - [AlertThemeProps](#alertthemeprops)
   - [AlertThemeColors](#alertthemecolors)
@@ -52,7 +52,6 @@ Introducing RN-Alertify, your go-to library for seamlessly integrating alert not
 - **Loading Indicator:** Display a loading indicator within alerts to indicate activity or loading states.
 - **Animation Modes:** Choose between different animation modes for the loading indicator, allowing for unique visual effects.
 - **Swipable Alerts:** Enable swiping gestures to dismiss alerts, offering intuitive and convenient user interaction.
-- **Background Customization:** Customize the alert background to match the alert type color or your preferred color scheme.
 - **Hide After Loading:** Automatically hide alerts after completion of loading, streamlining the user experience.
 - **Responsive Design:** Ensure optimal rendering across different devices.
 - **React Native Safe Area Support:** Seamlessly integrate with the `react-native-safe-area-context` library to handle safe areas in your app, ensuring proper rendering across different devices.
@@ -131,24 +130,28 @@ After wrapping your app with `AlertProvider`, you can use the alert by accessing
 
 ## AlertCommonProps
 
-| Property             | Type                | Description                                                                   | Default Value |
-| -------------------- | ------------------- | ----------------------------------------------------------------------------- | ------------- |
-| duration             | number              | The duration (in milliseconds) for which the alert will be displayed.         | 3000ms        |
-| showIndicator        | boolean             | Specifies whether to display the indicator (icon or bar) with the alert.      | true          |
-| dismissible          | boolean             | Specifies if the alert should hide when pressed.                              | false         |
-| shadowColorByType    | boolean             | Specifies if the shadow color should be the same as the alert type color.     | false         |
-| loadingAnimationMode | string              | Specifies the animation mode of the loading indicator.                        | 'normal'      |
-| swipeable            | boolean             | Specifies if the alert should be swipable to dismiss.                         | undefined     |
-| backgroundByType     | boolean             | Specifies if the alert background should be the same as the alert type color. | false         |
-| hideAfterLoading     | boolean             | Specifies if the alert should hide after loading.                             | false         |
-| messageProps         | `AlertMessageProps` | Specifies the message properties of the alert.                                | undefined     |
+| Property             | Type                                            | Description                                                                   | Default Value |
+| -------------------- | ----------------------------------------------- | ----------------------------------------------------------------------------- | ------------- |
+| duration             | number                                          | The duration (in milliseconds) for which the alert will be displayed.         | 3000ms        |
+| showIndicator        | boolean                                         | Specifies whether to display the indicator (icon or bar) with the alert.      | true          |
+| dismissible          | boolean                                         | Specifies if the alert should hide when pressed.                              | false         |
+| shadowColorByType    | boolean                                         | Specifies if the shadow color should be the same as the alert type color.     | false         |
+| loadingAnimationMode | string                                          | Specifies the animation mode of the loading indicator.                        | 'normal'      |
+| swipeable            | boolean                                         | Specifies if the alert should be swipable to dismiss.                         | undefined     |
+| backgroundByType     | boolean                                         | Specifies if the alert background should be the same as the alert type color. | false         |
+| hideAfterLoading     | boolean                                         | Specifies if the alert should hide after loading.                             | false         |
+| titleStyle           | `{disableMultiline: boolean, maxLines: number}` | Specifies the style of the alert container.                                   | undefined     |
+| messageStyle         | `{disableMultiline: boolean, maxLines: number}` | Specifies the style of the alert message.                                     | undefined     |
 
-## AlertMessageProps
+## AlertTextStyleProps
 
-| Property         | Type    | Description                                                       |
-| ---------------- | ------- | ----------------------------------------------------------------- |
-| disableMultiLine | boolean | Specifies if the message should be displayed as a single line.    |
-| maxMessageLines  | number  | Specifies the maximum number of lines to display for the message. |
+| Property         | Type                                                                           | Description                                                                                   | Default Value                   |
+| ---------------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- | ------------------------------- |
+| fontSize         | TextStyle['fontSize']                                                          | Specifies the font size of the alert title.                                                   | 16                              |
+| fontWeight       | TextStyle['fontWeight']                                                        | Specifies the font weight of the alert title.                                                 | 'bold'                          |
+| color            | TextStyle['color'] \| { light: TextStyle['color']; dark: TextStyle['color']; } | Specifies the color of the alert title. Note: This will override the color of the alert type. | {light: 'black', dark: 'white'} |
+| disableMultiLine | boolean                                                                        | Specifies if the message should be displayed as a single line.                                | -                               |
+| maxLines         | number                                                                         | Specifies the maximum number of lines to display for message.                                 | -                               |
 
 ### Alert Context
 
@@ -177,6 +180,7 @@ The `useAlertContext` hook provides the following props:
 | isShowing     | boolean                          | Returns the current state of the alert.                                              |
 | isLoading     | boolean                          | Returns the current state of the loader.                                             |
 | changeContent | `(params: AlertProps) => void`   | Changes the content of the alert based on the provided properties after some action. |
+| theme         | `AlertTheme`                     | Return the current value of the theme to reuse in your app.                          |
 
 If you want to see more information and examples about each of these props, please refer to the [API Methods](#api-methods) section.
 

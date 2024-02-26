@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import { Animated, Dimensions, PanResponder, Pressable } from 'react-native';
 import type { PanResponderGestureState } from 'react-native';
-import alertStyles from '../../styles';
-import { AlertIndicatorType, AlertType } from '../../types';
+import MakeAlertStyles from '../../styles';
+import { AlertIndicatorType } from '../../types';
 import type { AlertComponentProps } from '../../types';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AlertBody } from '../AlertBody/AlertBody';
@@ -13,7 +13,7 @@ export default function AlertComponent({
   isShowing,
   title,
   message,
-  type = AlertType.SUCCESS,
+  type = undefined,
   indicatorType = AlertIndicatorType.ICON,
   icon,
   showIndicator = true,
@@ -30,9 +30,42 @@ export default function AlertComponent({
   swipeable = false,
   backgroundByType = false,
   hideAfterLoading = true,
-  messageProps,
+  shadow,
+  containerStyle,
+  messageStyle,
+  titleStyle,
 }: AlertComponentProps) {
-  const s = alertStyles({ theme, type });
+  const s = MakeAlertStyles({
+    theme,
+    type,
+    customStyles: {
+      title: {
+        ...titleStyle,
+        color: {
+          [theme.mode === 'dark' ? 'light' : 'dark']:
+            theme.fonts.title.color[theme.mode === 'dark' ? 'light' : 'dark'],
+          [theme.mode]: titleStyle?.color,
+        },
+      },
+      message: {
+        ...messageStyle,
+        color: {
+          [theme.mode === 'dark' ? 'light' : 'dark']:
+            theme.fonts.message.color[theme.mode === 'dark' ? 'light' : 'dark'],
+          [theme.mode]: messageStyle?.color,
+        },
+      },
+      backgroundColor:
+        typeof containerStyle?.backgroundColor === 'string'
+          ? {
+              [theme.mode === 'dark' ? 'light' : 'dark']:
+                theme.colors[theme.mode === 'dark' ? 'light' : 'dark']
+                  .backgroundColor,
+              [theme.mode]: containerStyle?.backgroundColor,
+            }
+          : containerStyle?.backgroundColor,
+    },
+  });
   const { top } = useSafeAreaInsets();
   const { width } = Dimensions.get('window');
   const [animation] = React.useState<{
@@ -55,20 +88,17 @@ export default function AlertComponent({
   const messageLines = useMemo(() => {
     const messageLength = message?.length;
     const parentWidth = width * s.contentLeft.flex;
-    const baseHeight = s.container.height;
+    const baseHeight = containerStyle?.height || s.container.height;
     if (messageLength) {
       const fontSize = s.message.fontSize;
-      const messageWidth = messageLength * fontSize;
+      const messageWidth = messageLength * (fontSize || 0);
       const lines = Math.ceil(messageWidth / parentWidth) - 1;
-      if (
-        messageProps?.maxMessageLines &&
-        lines > messageProps.maxMessageLines
-      ) {
-        return baseHeight + messageProps.maxMessageLines * fontSize;
+      if (messageStyle?.maxLines && lines > messageStyle.maxLines) {
+        return baseHeight + messageStyle.maxLines * (fontSize || 0);
       }
-      if (!messageProps?.disableMultiLine) {
+      if (!messageStyle?.disableMultiLine) {
         return lines > 1
-          ? baseHeight + lines * fontSize - 4 * lines
+          ? baseHeight + lines * (fontSize || 0) - 4 * lines
           : baseHeight;
       }
     }
@@ -80,8 +110,9 @@ export default function AlertComponent({
     s.contentLeft.flex,
     s.message.fontSize,
     width,
-    messageProps?.disableMultiLine,
-    messageProps?.maxMessageLines,
+    messageStyle?.disableMultiLine,
+    messageStyle?.maxLines,
+    containerStyle,
   ]);
 
   const panResponder = React.useRef(
@@ -190,8 +221,8 @@ export default function AlertComponent({
       onPress={onPress}
       style={[
         s.container,
-        backgroundByType && !isLoading && s.containerByType,
-        shadowColorByType && s.shadowByType,
+        backgroundByType && !isLoading && type && s.containerByType,
+        shadowColorByType && !shadow?.shadowColor && s.shadowByType,
         indicatorType === AlertIndicatorType.BAR &&
           showIndicator &&
           !backgroundByType &&
@@ -213,6 +244,7 @@ export default function AlertComponent({
         },
         {
           height: messageLines,
+          ...shadow,
         },
       ]}
     >
@@ -230,6 +262,7 @@ export default function AlertComponent({
         />
       )}
       <AlertBody
+        styles={s}
         backgroundByType={backgroundByType}
         indicatorType={indicatorType}
         isLoading={isLoading}
@@ -243,7 +276,14 @@ export default function AlertComponent({
         type={type}
         icon={icon}
         message={message}
-        messageProps={messageProps}
+        messageStyle={{
+          disableMultiLine: messageStyle?.disableMultiLine,
+          maxLines: messageStyle?.maxLines,
+        }}
+        titleStyle={{
+          disableMultiLine: titleStyle?.disableMultiLine,
+          maxLines: titleStyle?.maxLines,
+        }}
       />
     </AnimatedPressable>
   );

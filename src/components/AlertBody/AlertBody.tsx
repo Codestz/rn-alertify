@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import alertStyles from '../../styles';
 import { AlertIndicatorType } from '../../types';
 import type { AlertBodyProps } from '../../types/AlertBody';
 import AlertIcon from '../AlertIcon/AlertIcon';
@@ -20,9 +19,17 @@ export function AlertBody({
   isShowing,
   loadingAnimationMode,
   icon,
-  messageProps,
+  messageStyle,
+  titleStyle,
+  styles: s,
 }: AlertBodyProps) {
-  const s = alertStyles({ theme, type });
+  const { disableMultiLine: disableTitleMultiline, maxLines: maxTitleLines } =
+    titleStyle || {};
+  const {
+    disableMultiLine: disableMessageMultiline,
+    maxLines: maxMessageLines,
+  } = messageStyle || {};
+
   return (
     <View
       {...(swipeable && !isLoading && panResponder.panHandlers)}
@@ -34,14 +41,21 @@ export function AlertBody({
           ...(!showIndicator && !icon && { flex: 1 }),
         }}
       >
-        <Text numberOfLines={message ? 1 : 2} style={s.title}>
+        <Text
+          {...(disableTitleMultiline && { numberOfLines: 1 })}
+          {...(maxTitleLines && {
+            numberOfLines: maxTitleLines,
+          })}
+          numberOfLines={message ? 1 : 2}
+          style={s.title}
+        >
           {title}
         </Text>
         {message && (
           <Text
-            {...(messageProps?.disableMultiLine && { numberOfLines: 1 })}
-            {...(messageProps?.maxMessageLines && {
-              numberOfLines: messageProps.maxMessageLines,
+            {...(disableMessageMultiline && { numberOfLines: 1 })}
+            {...(maxMessageLines && {
+              numberOfLines: maxMessageLines,
             })}
             style={s.message}
           >
@@ -55,9 +69,9 @@ export function AlertBody({
             indicatorType === AlertIndicatorType.ICON && (
               <AlertIcon
                 forceWhite={backgroundByType}
-                theme={theme}
                 type={type}
                 trigger={isShowing}
+                styles={s}
               />
             )
           ) : (

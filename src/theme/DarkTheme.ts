@@ -16,7 +16,5 @@ export const DarkTheme: AlertThemeColors = {
   },
   success: '#4CD964',
   warning: '#FFCC00',
-  titleColor: '#ffffff',
-  messageColor: '#ffffff',
   loadingIconColor: '#b4b4b4',
 };

@@ -2,16 +2,15 @@ import React, { useEffect, useRef } from 'react';
 import { Animated, Easing } from 'react-native';
 import { AlertType } from '../../types';
 import type { AlertIconProps } from '../../types';
-import alertIconStyles from './AlerIcon.styles';
+
 export function AlertIcon({
   trigger,
   type,
-  theme,
   forceWhite,
+  styles: s,
 }: AlertIconProps) {
   const circleAnimation = useRef(new Animated.Value(0)).current;
   const checkAnimation = useRef(new Animated.Value(0)).current;
-  const s = alertIconStyles({ theme, type });
 
   const startAnimation = React.useMemo(() => {
     const handleAnimation = () => {
@@ -42,12 +41,12 @@ export function AlertIcon({
     outputRange: [0, 1],
   });
 
-  const checkOpacity = checkAnimation.interpolate({
+  const iconOpacity = checkAnimation.interpolate({
     inputRange: [0, 1],
     outputRange: [0, 1],
   });
 
-  const checkScale = checkAnimation.interpolate({
+  const iconScale = checkAnimation.interpolate({
     inputRange: [0, 1],
     outputRange: [0.6, 1],
   });
@@ -71,8 +70,8 @@ export function AlertIcon({
           s.iconContent,
           forceWhite && s.forceWhite,
           {
-            opacity: checkOpacity,
-            transform: [{ scale: checkScale }],
+            opacity: iconOpacity,
+            transform: [{ scale: iconScale }],
           },
         ]}
       >

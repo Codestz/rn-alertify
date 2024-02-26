@@ -1,5 +1,5 @@
 import type { PanResponderInstance } from 'react-native';
-import type { AlertIndicatorType, AlertMessageProps, AlertType } from './Alert';
+import type { AlertIndicatorType, AlertTextStyle, AlertType } from './Alert';
 import type { AlertTheme } from './Theme';
 
 export interface AlertBodyProps {
@@ -8,7 +8,7 @@ export interface AlertBodyProps {
   title: string;
   message?: string;
   theme: AlertTheme;
-  type: AlertType | 'success' | 'error' | 'info' | 'warning';
+  type?: AlertType | 'success' | 'error' | 'info' | 'warning';
   panResponder: PanResponderInstance;
   backgroundByType: boolean;
   showIndicator: boolean;
@@ -16,5 +16,7 @@ export interface AlertBodyProps {
   isShowing: boolean;
   loadingAnimationMode: 'normal' | 'divided';
   icon?: React.ReactNode;
-  messageProps?: AlertMessageProps;
+  messageStyle?: Partial<Pick<AlertTextStyle, 'disableMultiLine' | 'maxLines'>>;
+  titleStyle?: Partial<Pick<AlertTextStyle, 'disableMultiLine' | 'maxLines'>>;
+  styles: any;
 }

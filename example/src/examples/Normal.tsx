@@ -43,7 +43,7 @@ export function NormalExample() {
                 message:
                   'This is an error alert, This is an error alert, This is an error alert,This is an error alert',
                 type: 'error',
-                messageProps: {
+                messageStyle: {
                   disableMultiLine: true,
                 },
               });

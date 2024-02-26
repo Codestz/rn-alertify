@@ -1,17 +1,11 @@
 import { StyleSheet } from 'react-native';
 import { Dimensions } from 'react-native';
+import type { AlertStyles } from '../types';
 import { UtilAdjustedFontSize } from '../utils';
-import type { AlertTheme, AlertType } from '../types';
 
 const { width } = Dimensions.get('window');
 
-const alertStyles = ({
-  theme,
-  type,
-}: {
-  theme: AlertTheme;
-  type: AlertType | 'success' | 'error' | 'info' | 'warning';
-}) =>
+const MakeAlertStyles = ({ theme, type, customStyles }: AlertStyles) =>
   StyleSheet.create({
     container: {
       position: 'absolute',
@@ -33,13 +27,15 @@ const alertStyles = ({
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: theme.colors[theme.mode].backgroundColor,
+      backgroundColor:
+        customStyles?.backgroundColor?.[theme.mode] ||
+        theme.colors[theme.mode].backgroundColor,
     },
     containerByType: {
-      backgroundColor: theme.colors[theme.mode][type],
+      ...(type && { backgroundColor: theme.colors[theme.mode][type] }),
     },
     shadowByType: {
-      shadowColor: theme.colors[theme.mode][type],
+      ...(type && { shadowColor: theme.colors[theme.mode][type] }),
     },
     containerNoIcon: {
       alignItems: 'flex-start',
@@ -51,7 +47,7 @@ const alertStyles = ({
       borderRightColor: 'gray',
     },
     barByType: {
-      borderRightColor: theme.colors[theme.mode][type],
+      ...(type && { borderRightColor: theme.colors[theme.mode][type] }),
     },
     content: {
       display: 'flex',
@@ -73,15 +69,21 @@ const alertStyles = ({
       justifyContent: 'center',
     },
     title: {
-      fontWeight: 'bold',
-      fontSize: UtilAdjustedFontSize(16),
-      color: theme.colors[theme.mode].titleColor,
+      fontWeight:
+        customStyles?.message?.fontWeight || theme.fonts.title.fontWeight,
+      fontSize: customStyles?.title?.fontSize || theme.fonts.title.fontSize,
+      color:
+        customStyles?.title?.color?.[theme.mode] ||
+        theme?.fonts?.title?.color?.[theme.mode],
     },
     message: {
-      fontSize: UtilAdjustedFontSize(14),
-      fontWeight: 'normal',
+      fontSize: customStyles?.message?.fontSize || theme.fonts.message.fontSize,
+      fontWeight:
+        customStyles?.message?.fontWeight || theme.fonts.message.fontWeight,
       marginTop: 4,
-      color: theme.colors[theme.mode].messageColor,
+      color:
+        customStyles?.message?.color?.[theme.mode] ||
+        theme?.fonts?.message?.color?.[theme.mode],
     },
     progressBar: {
       position: 'absolute',
@@ -89,12 +91,30 @@ const alertStyles = ({
       bottom: 0,
       height: 6,
       overflow: 'hidden',
-      backgroundColor: theme.colors[theme.mode][type],
       borderBottomLeftRadius: 10,
+      ...(type && { backgroundColor: theme.colors[theme.mode][type] }),
     },
     progressBarLoading: {
       backgroundColor: '#fff',
     },
+    iconCircle: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      borderWidth: 2,
+      justifyContent: 'center',
+      alignItems: 'center',
+      ...(type && { borderColor: theme.colors[theme.mode][type] }),
+    },
+    forceWhite: {
+      borderColor: theme.mode === 'dark' ? '#fff' : '#000',
+      color: theme.mode === 'dark' ? '#fff' : '#000',
+    },
+    iconContent: {
+      ...(type && { color: theme.colors[theme.mode][type] }),
+      fontSize: UtilAdjustedFontSize(18),
+      fontWeight: 'bold',
+    },
   });
 
-export default alertStyles;
+export default MakeAlertStyles;

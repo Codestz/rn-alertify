@@ -1,6 +1,6 @@
 {
   "name": "rn-alertify",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Introducing RN-Alertify, your go-to library for seamlessly integrating alert notifications into your React Native (RN) applications for both Android and iOS platforms. RN-Alertify simplifies the process of displaying alerts, ensuring a hassle-free experience for developers and users alike.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
